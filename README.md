@@ -167,4 +167,4 @@ explanations for more details.
 
     - **PO1**: Demonstrate and be able to communicate the knowledge of data types, algorithms, and mathematical principles behind discrete objects.
 
-    - **Covered By**: LO2, LO3
+    - **Covered By**: LO3, LO4
