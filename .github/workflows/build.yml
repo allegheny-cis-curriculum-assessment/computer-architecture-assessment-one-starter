@@ -1,6 +1,10 @@
 # Basic workflow
 name: build
 
+# Allow write permissions
+permissions:
+  contents: write
+
 # Use more columns for terminal output
 env:
   COLUMNS: 120
@@ -55,12 +59,13 @@ jobs:
         - name: Install pico-sdk
           if: always()
           run: |
-            cd /
+            cd /home/runner/work
             git clone -b master --recurse-submodules https://github.com/raspberrypi/pico-sdk.git
         # Install cmocka
         - name: Install cmocka
           if: always()
           run: |
+            cd /home/runner/work
             mkdir -p cmocka && cd cmocka && \
             wget https://cmocka.org/files/1.1/cmocka-1.1.7.tar.xz && \
             tar -xvf cmocka-1.1.7.tar.xz && \
@@ -73,7 +78,7 @@ jobs:
             pwd
             mkdir build
             cd build
-            cmake ../
+            cmake ..
             make
         # Compile unit test binary
         - name: Build Evalugator binary
@@ -90,7 +95,7 @@ jobs:
           if: always()
           run: |
             pwd
-            build/evalugator/evalugator/evalugator.assessment.test.bin
+            build/evalugator/evalugator.assessment.test.bin >> build/result
         # Run GatorGrader: use the gatorgrade.yml in repository's root
         - name: Run GatorGrader with GatorGrade
           if: always()
@@ -118,4 +123,4 @@ jobs:
             source-arg: JSON_REPORT
     env:
       LD_LIBRARY_PATH: "/usr/local/lib:/opt/hostedtoolcache/Python/3.10.13/x64/lib"
-      PICO_SDK_PATH: "/pico-sdk"
+      PICO_SDK_PATH: "/home/runner/work/pico-sdk"

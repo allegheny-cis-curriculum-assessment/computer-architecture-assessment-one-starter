@@ -4,7 +4,9 @@
 [![Language: C](https://img.shields.io/badge/Language-C-blue.svg)](https://www.open-std.org/jtc1/sc22/wg14/)
 [![Hardware: Raspberry Pi Pico](https://img.shields.io/badge/Hardware-Raspberry%20Pi%20Pico-e30b5d.svg)](https://https://www.raspberrypi.com/products/raspberry-pi-pico/)
 
-## ⚠️ Note about this assessment
+## ⚠️ Notes about this assessment
+
+### Taking this assessment
 
 Unlike other assessments given to Allegheny College Department of Computer 
 and Information Science courses, this assessment requires:
@@ -15,6 +17,26 @@ and Information Science courses, this assessment requires:
 
 This assessment also _does not use_ GitHub CodeSpaces due to the need for physical
 hardware and individual machine-level setup.
+
+### Assessing your progress
+
+This assessment relies on several background processes to compile, run, and
+self-evaluate. It is possible that you may not be able to fully assess your 
+progress on your `clone`d copy of this repository. The GitHub Actions workflow
+for evaluating this work can take nearly 6 minutes to complete.
+
+Focus on the `TODO`s in [`assessment.c`](source/assessment.c) with the goal
+of producing a program that `print`s a series of statements that average
+line-by line. A successful running program resembles the following:
+
+```bash
+AVERAGE: 1.0031 kWs
+AVERAGE: 1.0024 kWs
+...
+```
+
+The numbers above may not match your output exactly, but are close enough
+to be a representative sample.
 
 ## Table of Contents
 
