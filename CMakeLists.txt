@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(assessment
-    VERSION 1.0
-    DESCRIPTION "Evaluation assessment for CMPSC 200: Computer Organization, Allegheny College"
-    LANGUAGES C CXX ASM
-)
-
 OPTION(EVALUGATOR "Evaluate assessment using cmocka unit tests" OFF)
 
 set(CMAKE_C_STANDARD 11)
@@ -25,3 +19,8 @@ if(NOT EVALUGATOR)
     add_subdirectory(./source)
 endif(NOT EVALUGATOR)
 
+project(assessment
+    VERSION 1.0
+    DESCRIPTION "Evaluation assessment for CMPSC 200: Computer Organization, Allegheny College"
+    LANGUAGES C CXX ASM
+)
