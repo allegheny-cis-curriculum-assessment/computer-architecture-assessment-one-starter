@@ -38,44 +38,40 @@
 
 # Assessment Based on Program Output {{{
 
-- description: Program uses structs as described to store data read from sensors
-  check: MatchCommandFragment
-  objectives: "CSLO3"
-  options:
-    command: build/evalugator/evalugator.assessment.test.bin
-    fragment: "[       OK ] test_record_reading"
-    count: 1
-    exact: true
-- description: Program implements a struct of the correct size according to instructions
-  check: MatchCommandFragment
-  objectives: "CSLO3"
-  options:
-    command: build/evalugator/evalugator.assessment.test.bin
-    fragment: "[       OK ] test_reading_size"
-    count: 1
-    exact: true
-- description: Program frees dynamic memory to store additional reads beyond initial capacity
-  check: MatchCommandFragment
-  objectives: "CSLO3"
-  options:
-    command: build/evalugator/evalugator.assessment.test.bin
-    fragment: "[       OK ] test_free_readings"
-    count: 1
-    exact: true
-- description: Program successfully pushes to inter-core buffer
-  check: MatchCommandFragment
-  objectives: "CSLO4"
-  options:
-    command: build/evalugator/evalugator.assessment.test.bin
-    fragment: "[       OK ] test_push_to_buffer"
-    count: 1
-    exact: true
-- description: Program successfully reads from inter-core buffer
-  check: MatchCommandFragment
-  objectives: "CSLO4"
-  options:
-    command: build/evalugator/evalugator.assessment.test.bin
-    fragment: "[       OK ] test_read_from_buffer"
-    count: 1
-    exact: true
+- build/result:
+    - description: Program uses structs as described to store data read from sensors
+      check: MatchFileFragment
+      objectives: "CSLO3"
+      options:
+        fragment: 'OK ] test_record_reading'
+        count: 1
+        exact: true
+    - description: Program implements a struct of the correct size according to instructions
+      check: MatchFileFragment
+      objectives: "CSLO3"
+      options:
+        fragment: 'OK ] test_reading_size'
+        count: 1
+        exact: true
+    - description: Program frees dynamic memory to store additional reads beyond initial capacity
+      check: MatchFileFragment
+      objectives: "CSLO3"
+      options:
+        fragment: 'OK ] test_free_readings'
+        count: 1
+        exact: true
+    - description: Program successfully pushes to inter-core buffer
+      check: MatchFileFragment
+      objectives: "CSLO4"
+      options:
+        fragment: 'OK ] test_push_to_buffer'
+        count: 1
+        exact: true
+    - description: Program successfully reads from inter-core buffer
+      check: MatchFileFragment
+      objectives: "CSLO4"
+      options:
+        fragment: 'OK ] test_read_from_buffer'
+        count: 1
+        exact: true
 # }}}
