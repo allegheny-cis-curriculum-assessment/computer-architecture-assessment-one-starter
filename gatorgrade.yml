@@ -1,0 +1,81 @@
+# Assessment of Honor Code {{{
+
+- README.md:
+    - description: Ensure that the README.md file exists inside of the root of the GitHub repository
+      check: ConfirmFileExists
+    - description: Delete the phrase 'Add Your Name Here' and add your own name as an Honor Code pledge in README.md
+      check: MatchFileFragment
+      objectives: "CSLO3"
+      options:
+        fragment: "Add Your Name Here"
+        count: 0
+        exact: true
+    - description: Retype the every word in the Honor Code pledge in README.md
+      check: MatchFileFragment
+      objectives: "CSLO3"
+      options:
+        fragment: "I adhered to the Allegheny College Honor Code while completing this assessment."
+        count: 2
+        exact: true
+
+# }}}
+
+# Assessment of Program Characteristics {{{
+
+- source/assessment.c:
+    - description: Ensure that assessment.c file exists in the source/ directory
+      check: ConfirmFileExists
+      objectives: "CSLO3"
+    - description: Complete all TODOs, remove the TODO markers, and rewrite comments for assesment.c
+      check: MatchFileFragment
+      objectives: "CSLO3"
+      options:
+        fragment: TODO
+        count: 0
+        exact: true
+
+# }}}
+
+# Assessment Based on Program Output {{{
+
+- description: Program uses structs as described to store data read from sensors
+  check: MatchCommandFragment
+  objectives: "CSLO3"
+  options:
+    command: build/evalugator/evalugator.assessment.test.bin
+    fragment: "[       OK ] test_record_reading"
+    count: 1
+    exact: true
+- description: Program implements a struct of the correct size according to instructions
+  check: MatchCommandFragment
+  objectives: "CSLO3"
+  options:
+    command: build/evalugator/evalugator.assessment.test.bin
+    fragment: "[       OK ] test_reading_size"
+    count: 1
+    exact: true
+- description: Program frees dynamic memory to store additional reads beyond initial capacity
+  check: MatchCommandFragment
+  objectives: "CSLO3"
+  options:
+    command: build/evalugator/evalugator.assessment.test.bin
+    fragment: "[       OK ] test_free_readings"
+    count: 1
+    exact: true
+- description: Program successfully pushes to inter-core buffer
+  check: MatchCommandFragment
+  objectives: "CSLO4"
+  options:
+    command: build/evalugator/evalugator.assessment.test.bin
+    fragment: "[       OK ] test_push_to_buffer"
+    count: 1
+    exact: true
+- description: Program successfully reads from inter-core buffer
+  check: MatchCommandFragment
+  objectives: "CSLO4"
+  options:
+    command: build/evalugator/evalugator.assessment.test.bin
+    fragment: "[       OK ] test_read_from_buffer"
+    count: 1
+    exact: true
+# }}}

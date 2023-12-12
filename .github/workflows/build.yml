@@ -1,0 +1,121 @@
+# Basic workflow
+name: build
+
+# Use more columns for terminal output
+env:
+  COLUMNS: 120
+  PYTHONIOENCODING: utf8
+
+# Controls when the action will run
+# Workflow begins with push or PR events
+# Focuses on the main branch only
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    # do not allow a build to run for more than 20 minutes
+    timeout-minutes: 20
+    # Use the latest version of Ubuntu
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # Performs all actions on different versions of Python
+        python-version: ["3.10"]
+        os: [ubuntu-latest]
+    # Define the workflow steps
+    steps:
+    # Checkout the code of the repository
+        - name: Check out Repository Code
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+        # Setup Python for the current language version
+        - name: Setup Python ${{ matrix.python-version }}
+          if: always()
+          uses: actions/setup-python@v4
+          with:
+            python-version: ${{ matrix.python-version }}
+        # Install pip
+        - name: Install Pip
+          if: always()
+          run: |
+            pip install -U pip
+            python -m pip install --user pipx
+        # Install GCC Cross-compiler toolchain
+        - name: Install GCC ARM Toolchain
+          if: always()
+          run: |
+            sudo apt update
+            sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential
+        # Install pico-sdk
+        - name: Install pico-sdk
+          if: always()
+          run: |
+            cd /
+            git clone -b master --recurse-submodules https://github.com/raspberrypi/pico-sdk.git
+        # Install cmocka
+        - name: Install cmocka
+          if: always()
+          run: |
+            mkdir -p cmocka && cd cmocka && \
+            wget https://cmocka.org/files/1.1/cmocka-1.1.7.tar.xz && \
+            tar -xvf cmocka-1.1.7.tar.xz && \
+            cd cmocka-1.1.7 && mkdir -p build && cd build && \
+            sudo cmake .. && sudo make && sudo make install
+        # Compile C programs
+        - name: Compile C programs
+          if: always()
+          run: |
+            pwd
+            mkdir build
+            cd build
+            cmake ../
+            make
+        # Compile unit test binary
+        - name: Build Evalugator binary
+          if: always()
+          run: |
+            pwd
+            ls
+            cd build
+            rm -rf *
+            cmake -D EVALUGATOR=ON ../
+            make
+        # Run Evalugator binary
+        - name: Run Evalugator binary
+          if: always()
+          run: |
+            pwd
+            build/evalugator/evalugator/evalugator.assessment.test.bin
+        # Run GatorGrader: use the gatorgrade.yml in repository's root
+        - name: Run GatorGrader with GatorGrade
+          if: always()
+          run:  |
+           pipx install gatorgrade
+           pipx list
+           gatorgrade --report env md GITHUB_STEP_SUMMARY
+        # Get the current time
+        - name: Get the Current Time
+          uses: josStorer/get-current-time@v2
+          if: always()
+          id: current-time
+          with:
+            format: YYYYMMDD-HH-mm-ss
+            utcOffset: "-05:00"
+        # Write the collected GatorGrade data to the designated branch
+        - name: Write Collected Data to Designated Branch
+          uses: GatorEducator/BranchWrite@v1.0.1
+          if: always()
+          with:
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            branch: insight
+            path: insight/insight-report-${{steps.current-time.outputs.formattedTime}}.json
+            source: env
+            source-arg: JSON_REPORT
+    env:
+      LD_LIBRARY_PATH: "/usr/local/lib:/opt/hostedtoolcache/Python/3.10.13/x64/lib"
+      PICO_SDK_PATH: "/pico-sdk"
